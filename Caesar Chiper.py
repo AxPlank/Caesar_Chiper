@@ -122,12 +122,12 @@ class Caesar_Chiper():
 
 
 
-def encryption():
+def encryption_page():
     def encryption_close():
         root_encryption.quit()
         root_encryption.destroy()
 
-    def send():
+    def send_btn():
         login_id = id_stringvar.get()
         login_pw = pw_stringvar.get()
         target_id = target_stringvar.get()
@@ -176,16 +176,16 @@ def encryption():
     Entry(root_encryption, width=15, font=font_encdec, textvariable=title_stringvar).grid(row=2, column=1, padx=2, pady=2)
     Label(root_encryption, text='Content', width=15, font=font_encdec).grid(row=3, column=0, padx=2, pady=2)
     Entry(root_encryption, width=76, textvariable=content_stringvar).grid(row=3, column=1, columnspan=3, padx=2, pady=2)
-    Button(root_encryption, text='Send', width=15, font=font_encdec, command=send).grid(row=4, column=0, padx=2, pady=2)
+    Button(root_encryption, text='Send', width=15, font=font_encdec, command=send_btn).grid(row=4, column=0, padx=2, pady=2)
 
     root_encryption.mainloop()
 
-def decryption():
+def decryption_page():
     def decryption_close():
         root_decryption.quit()
         root_decryption.destroy()
 
-    def receive():
+    def receive_btn():
         login_id = id_stringvar.get()
         login_pw = pw_stringvar.get()
         target_id = target_stringvar.get()
@@ -225,7 +225,7 @@ def decryption():
     Entry(root_decryption, width=15, font=font_encdec, textvariable=pw_stringvar).grid(row=0, column=3, padx=2, pady=2)
     Label(root_decryption, text='Target', width=15, font=font_encdec).grid(row=1, column=0, padx=2, pady=2)
     Entry(root_decryption, width=15, font=font_encdec, textvariable=target_stringvar).grid(row=1, column=1, padx=2, pady=2)
-    Button(root_decryption, text='Receive', width=15, font=font_encdec, command=receive).grid(row=3, column=0, padx=2, pady=2)
+    Button(root_decryption, text='Receive', width=15, font=font_encdec, command=receive_btn).grid(row=3, column=0, padx=2, pady=2)
 
     root_decryption.mainloop()
 
@@ -244,8 +244,8 @@ menu_quit.add_command(label='Quit', command=select_close)
 menubar.add_cascade(label='Menu', menu=menu_quit)
 root_select.config(menu=menubar)
 
-Button(root_select, text='Encryption', command=encryption, font=font_select).grid(row=0, column=1, padx=2, pady=2)
-Button(root_select, text='Decryption', command=decryption, font=font_select).grid(row=0, column=2, padx=2, pady=2)
+Button(root_select, text='Encryption', command=encryption_page, font=font_select).grid(row=0, column=1, padx=2, pady=2)
+Button(root_select, text='Decryption', command=decryption_page, font=font_select).grid(row=0, column=2, padx=2, pady=2)
 
 if __name__ == '__main__':
     root_select.mainloop()
