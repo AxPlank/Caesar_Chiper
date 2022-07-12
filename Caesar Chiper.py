@@ -215,7 +215,7 @@ def encryption_page():
 
 def decryption_page():
     """
-    메일 송신 창
+    메일 수신 창
     """
     def decryption_close():
         """
