@@ -6,6 +6,9 @@ import imaplib
 import email
 from email.mime.text import MIMEText
 
+"""
+암호화, 복호화 키
+"""
 key_dictt = {
     'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5,
     'F': 6, 'G': 7, 'H': 8, 'I': 9, 'J': 10,
@@ -15,6 +18,9 @@ key_dictt = {
     'Z': 26
 }
 
+"""
+이메일 송신, 수신
+"""
 class Email():
     def __init__(self, login_id, login_pw, target_id):
         self.login_id = login_id
@@ -22,48 +28,60 @@ class Email():
         self.target_id = target_id
 
     def send(self, title, encrypted_content):
+        """
+        이메일 송신
+        """
         s = smtplib.SMTP('smtp.gmail.com', 587)
         s.starttls()
-        s.login(self.login_id, self.login_pw)
+        s.login(self.login_id, self.login_pw) # 로그인
         try:
-            msg = MIMEText(encrypted_content)
-            msg['Subject'] = title
-            s.sendmail(self.login_id, self.target_id, msg.as_string())
-            s.quit()
+            msg = MIMEText(encrypted_content) # 메일 본문 지정
+            msg['Subject'] = title # 메일 타이틀 지정
+            s.sendmail(self.login_id, self.target_id, msg.as_string()) # 메일 송신
+            s.quit() # 종료
         except:
             showerror(title='Caesar Chiper', message='로그인 실패')
 
     def receive(self):
+        """
+        이메일 수신
+        """
         i = imaplib.IMAP4_SSL('imap.gmail.com', 993)
-        i.login(self.login_id, self.login_pw)
         try:
-            i.select('INBOX', readonly=True)
-            result, search_data = i.uid('search', None, f'HEADER FROM \"{self.target_id}\"')
+            i.login(self.login_id, self.login_pw)  # 로그인
+            i.select('INBOX', readonly=True) # 받은메일함 접속
+            result, search_data = i.uid('search', None, f'HEADER FROM \"{self.target_id}\"') # 입력된 송신자와 메일의 송신자가 같은 메일 검색
             search_data_uid = search_data[0].split()[-1]
             result, fetch_data = i.uid('fetch', search_data_uid, 'RFC822')
-            raw_data = fetch_data[0][1]
-            message = email.message_from_bytes(raw_data)
-            encrypted_content = ''
+            raw_data = fetch_data[0][1] # 제일 최근 메일
+            message = email.message_from_bytes(raw_data) # 메시지 형식으로 변환
+            encrypted_content = '' # 메일 본문 저장할 변수
             if message.is_multipart():
                 for part in message.walk():
-                    ctype = part.get_content_type()
+                    ctype = part.get_content_type() # 메일 본문 타입
                     cdispo = str(part.get('Content-Disposition'))
                     if ctype == 'text/plain' and 'attachment' not in cdispo:
-                        encrypted_content = str(part.get_payload(decode=True))
+                        encrypted_content = str(part.get_payload(decode=True)) # 메일 본문 획득
                         break
             else:
-                encrypted_content = str(message.get_payload(decode=True))
-            i.close()
+                encrypted_content = str(message.get_payload(decode=True)) # 메일 본문 획득
+            i.close() # 닫고 로그아웃
             i.logout()
             return encrypted_content
         except:
             showerror(title='Caesar Chiper', message='로그인 실패')
 
+"""
+암호 알고리즘
+"""
 class Caesar_Chiper():
     def __init__(self, inputt):
         self.content = inputt
 
     def encryption(self, key):
+        """
+        암호화
+        """
         try:
             encryption_key = key_dictt[key]
             output = key
@@ -92,8 +110,11 @@ class Caesar_Chiper():
             showerror(title='Caesar Chiper', message='키는 반드세 알파벳 대문자여야 합니다.')
 
     def decryption(self):
-        key = self.content[2]
-        self.content = self.content[3:len(self.content)-1]
+        """
+        복호화
+        """
+        key = self.content[2] # 키 분리
+        self.content = self.content[3:len(self.content)-1] # 본문 분리
         interval = key_dictt[key]
         output = ''
         for index in self.content:
@@ -123,11 +144,20 @@ class Caesar_Chiper():
 
 
 def encryption_page():
+    """
+    메일 송신 창
+    """
     def encryption_close():
+        """
+        종료 기능
+        """
         root_encryption.quit()
         root_encryption.destroy()
 
     def send_btn():
+        """
+        전송 버튼
+        """
         login_id = id_stringvar.get()
         login_pw = pw_stringvar.get()
         target_id = target_stringvar.get()
@@ -143,6 +173,9 @@ def encryption_page():
         except:
             showerror(title='Caesar Chiper', message='전송 실패')
 
+    """
+    메일 송신 창 GUI
+    """
     root_select.quit()
     root_select.destroy()
     root_encryption = Tk()
@@ -181,11 +214,20 @@ def encryption_page():
     root_encryption.mainloop()
 
 def decryption_page():
+    """
+    메일 송신 창
+    """
     def decryption_close():
+        """
+        종료 버튼
+        """
         root_decryption.quit()
         root_decryption.destroy()
 
     def receive_btn():
+        """
+        수신 버튼
+        """
         login_id = id_stringvar.get()
         login_pw = pw_stringvar.get()
         target_id = target_stringvar.get()
@@ -201,6 +243,9 @@ def decryption_page():
         except:
             showerror(title='Caesar Chiper', message='수신 실패')
 
+    """
+    메일 수신 창 GUI
+    """
     root_select.quit()
     root_select.destroy()
     root_decryption = Tk()
@@ -230,9 +275,15 @@ def decryption_page():
     root_decryption.mainloop()
 
 def select_close():
+    """
+    종료 버튼
+    """
     root_select.quit()
     root_select.destroy()
 
+"""
+메인 화면 GUI
+"""
 root_select = Tk()
 root_select.title('Caesar Chiper')
 root_select.resizable(False,False)
