@@ -1,4 +1,4 @@
-('C:\\Users\\USER\\Desktop\\Programming_study\\Python\\Caesar_Chiper\\build\\Caesar '
+('C:\\Users\\USER\\Desktop\\Programming_study\\Python\\Caesar_Chiper\\Caesar_Chiper\\build\\Caesar '
  'Chiper\\PYZ-00.pyz',
  [('os', 'C:\\Python310\\lib\\os.py', 'PYMODULE'),
   ('subprocess', 'C:\\Python310\\lib\\subprocess.py', 'PYMODULE'),

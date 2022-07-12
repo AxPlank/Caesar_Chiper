@@ -136,7 +136,7 @@ def encryption_page():
         content = content_stringvar.get()
         C = Caesar_Chiper(content)
         encrypted_content = C.encryption(key)
-        E = Email(login_id, login_pw, target_id)
+        E = Email(login_id=login_id, login_pw=login_pw, target_id=target_id)
         E.send(title, encrypted_content)
         try:
             showinfo(title='Caesar Chiper', message='전송 성공')
@@ -189,7 +189,7 @@ def decryption_page():
         login_id = id_stringvar.get()
         login_pw = pw_stringvar.get()
         target_id = target_stringvar.get()
-        E = Email(login_id, login_pw, target_id)
+        E = Email(login_id=login_id, login_pw=login_pw, target_id=target_id)
         encrypted_content = E.receive()
         try:
             C = Caesar_Chiper(encrypted_content)
